@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UAE Mystery Shopper</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;700;900&family=Barlow+Condensed:wght@400;700;800&family=Barlow:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #c9a84c;
+      --gold-light: #e2c46e;
+      --white: #f1f5f5;
+      --bg-dark: #2b2d35;
+      --bg-mid: #363840;
+      --text-light: rgba(241,245,245,0.85);
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--bg-dark);
+      color: var(--white);
+      position: relative;
+    }
+
+    /* ── BACKGROUND ─────────────────────────────────────── */
+    .bg-layer {
+      position: fixed; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse at 30% 50%, #3c3f4e 0%, #252830 55%, #1e2028 100%);
+    }
+
+    /* Network mesh SVG overlay */
+    .bg-mesh {
+      position: fixed; inset: 0; z-index: 1; opacity: 0.18;
+      background-image:
+        radial-gradient(circle, rgba(180,180,210,0.5) 1px, transparent 1px),
+        radial-gradient(circle, rgba(180,180,210,0.3) 1px, transparent 1px);
+      background-size: 60px 60px, 30px 30px;
+      background-position: 0 0, 15px 15px;
+    }
+
+    /* Diagonal line network */
+    .bg-lines {
+      position: fixed; inset: 0; z-index: 1; opacity: 0.07;
+      background-image:
+        linear-gradient(60deg, rgba(200,200,230,0.6) 1px, transparent 1px),
+        linear-gradient(-60deg, rgba(200,200,230,0.6) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(200,200,230,0.3) 1px, transparent 1px);
+      background-size: 80px 80px, 80px 80px, 40px 40px;
+    }
+
+    /* Right-side subtle radial glow */
+    .bg-glow {
+      position: fixed; right: 0; top: 0; width: 55%; height: 100%; z-index: 1;
+      background: radial-gradient(ellipse at 80% 50%, rgba(80,85,110,0.35) 0%, transparent 65%);
+    }
+
+    /* ── LAYOUT ─────────────────────────────────────────── */
+    .page {
+      position: relative; z-index: 10;
+      display: flex; align-items: stretch;
+      width: 100%; height: 100vh;
+      padding: 0;
+    }
+
+    .left-col {
+      width: 58%;
+      display: flex; flex-direction: column;
+      padding: 28px 30px 24px 60px;
+      justify-content: space-between;
+    }
+
+    .right-col {
+      width: 42%;
+      display: flex; align-items: center; justify-content: center;
+      padding-top: 40px;
+      position: relative;
+    }
+
+    /* ── LOGOS TOP ───────────────────────────────────────── */
+    .logos-row {
+      display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+    }
+
+    /* EGSEP Logo */
+    .egsep-logo {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .egsep-emblem {
+      width: 54px; height: 54px; flex-shrink: 0;
+    }
+    .egsep-text {
+      display: flex; flex-direction: column; line-height: 1.2;
+    }
+    .egsep-text .ar {
+      font-family: 'Noto Sans Arabic', sans-serif;
+      font-size: 9.5px; font-weight: 400;
+      color: var(--gold-light); letter-spacing: 0.01em;
+      direction: rtl;
+    }
+    .egsep-text .en {
+      font-size: 8px; font-weight: 400;
+      color: rgba(200,180,130,0.9); letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* UAE MS Logo */
+    .uaems-logo {
+      display: flex; align-items: center; gap: 12px; margin-top: 4px;
+    }
+    .uaems-icon {
+      width: 42px; height: 42px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 18px rgba(201,168,76,0.4);
+      flex-shrink: 0;
+    }
+    .uaems-icon svg { width: 24px; height: 24px; }
+    .uaems-text { display: flex; flex-direction: column; line-height: 1.25; }
+    .uaems-text .ar {
+      font-family: 'Noto Sans Arabic', sans-serif;
+      font-size: 11px; font-weight: 700; color: var(--gold-light);
+      direction: rtl;
+    }
+    .uaems-text .en {
+      font-size: 20px; font-weight: 800; letter-spacing: -0.02em;
+      font-family: 'Barlow Condensed', sans-serif;
+      color: var(--gold-light);
+    }
+
+    /* ── HERO TEXT ───────────────────────────────────────── */
+    .hero-text {
+      flex: 1;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 10px 0 6px;
+    }
+
+    .ar-sub {
+      font-family: 'Noto Sans Arabic', sans-serif;
+      font-size: clamp(14px, 1.5vw, 22px);
+      font-weight: 300; color: var(--text-light);
+      direction: rtl; margin-bottom: 4px;
+      letter-spacing: 0.01em;
+    }
+    .ar-main {
+      font-family: 'Noto Sans Arabic', sans-serif;
+      font-size: clamp(24px, 3vw, 46px);
+      font-weight: 900; color: var(--white);
+      direction: rtl; margin-bottom: 20px;
+      line-height: 1.1;
+    }
+    .en-sub {
+      font-size: clamp(11px, 1.1vw, 16px);
+      font-weight: 300; color: var(--text-light);
+      letter-spacing: 0.12em; text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .en-main {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(22px, 2.8vw, 42px);
+      font-weight: 800; color: var(--white);
+      letter-spacing: 0.02em; text-transform: uppercase;
+    }
+
+    /* ── BOTTOM ROW ──────────────────────────────────────── */
+    .bottom-row {
+      display: flex; align-items: flex-end; gap: 40px;
+    }
+
+    /* QR Section */
+    .qr-section { display: flex; flex-direction: column; gap: 12px; }
+    .qr-inner { display: flex; align-items: center; gap: 14px; }
+    .qr-box {
+      width: 90px; height: 90px; flex-shrink: 0;
+      background: white; border-radius: 8px; padding: 6px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    .qr-box svg { width: 100%; height: 100%; }
+    .qr-label { display: flex; flex-direction: column; gap: 2px; }
+    .qr-label .ar {
+      font-family: 'Noto Sans Arabic', sans-serif;
+      font-size: 13px; font-weight: 700; color: var(--white);
+      direction: rtl; line-height: 1.3;
+    }
+    .qr-label .en {
+      font-size: 11px; font-weight: 700;
+      color: var(--white); letter-spacing: 0.06em;
+      text-transform: uppercase; line-height: 1.3;
+    }
+
+    /* Store Buttons */
+    .store-buttons { display: flex; gap: 10px; align-items: center; }
+    .store-btn {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(0,0,0,0.55);
+      border: 1.5px solid rgba(255,255,255,0.25);
+      border-radius: 8px;
+      padding: 7px 14px;
+      text-decoration: none; color: white;
+      transition: border-color 0.2s, background 0.2s;
+      min-width: 120px;
+    }
+    .store-btn:hover {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.1);
+    }
+    .store-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+    .store-btn-text { display: flex; flex-direction: column; line-height: 1.2; }
+    .store-btn-text .small { font-size: 8px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.75; }
+    .store-btn-text .big { font-size: 13px; font-weight: 600; }
+
+    /* Badges */
+    .badges-section { display: flex; align-items: flex-end; gap: 16px; }
+
+    .seal-badge {
+      width: 90px; height: 90px;
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      background: radial-gradient(circle, rgba(201,168,76,0.12), transparent);
+      box-shadow: 0 0 20px rgba(201,168,76,0.2);
+    }
+    .seal-badge::before {
+      content: '';
+      position: absolute; inset: 5px;
+      border: 1px dashed rgba(201,168,76,0.5);
+      border-radius: 50%;
+    }
+    .seal-text {
+      text-align: center; font-size: 7.5px; font-weight: 700;
+      letter-spacing: 0.04em; line-height: 1.3;
+      color: var(--gold-light);
+      font-family: 'Barlow Condensed', sans-serif;
+      text-transform: uppercase;
+      padding: 8px;
+    }
+    .seal-text .ar-seal {
+      font-family: 'Noto Sans Arabic', sans-serif;
+      direction: rtl; display: block;
+      font-size: 7px;
+    }
+
+    .whatsapp-btn {
+      width: 80px; height: 80px;
+      background: #25d366;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none;
+      box-shadow: 0 4px 18px rgba(37,211,102,0.45);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .whatsapp-btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 24px rgba(37,211,102,0.6);
+    }
+    .whatsapp-btn svg { width: 42px; height: 42px; }
+
+    /* ── PHONE MOCKUP ────────────────────────────────────── */
+    .phones-container {
+      position: relative; width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .phone {
+      position: absolute;
+      width: 200px;
+      background: linear-gradient(160deg, #3a3d4a 0%, #22242c 100%);
+      border-radius: 28px;
+      border: 2px solid rgba(255,255,255,0.12);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.05);
+      overflow: hidden;
+    }
+
+    .phone-back {
+      left: 50%; top: 50%;
+      transform: translate(-78%, -46%) rotate(-8deg);
+      width: 185px;
+      opacity: 0.82;
+    }
+    .phone-front {
+      left: 50%; top: 50%;
+      transform: translate(-30%, -50%) rotate(5deg);
+      z-index: 2;
+      width: 205px;
+    }
+
+    .phone-screen {
+      width: 100%;
+      background: #f0f0f0;
+      overflow: hidden;
+    }
+    .phone-screen-inner {
+      padding: 0;
+      background: white;
+    }
+
+    /* Phone notch */
+    .phone-notch {
+      height: 28px;
+      background: #22242c;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .phone-notch::after {
+      content: '';
+      width: 70px; height: 14px;
+      background: #22242c;
+      border-radius: 0 0 10px 10px;
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    }
+
+    /* App UI simulation */
+    .app-header {
+      background: #f7f7f7;
+      padding: 8px 10px 6px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    .app-header-text {
+      font-size: 10px; font-weight: 700; color: #333;
+      font-family: 'Noto Sans Arabic', sans-serif;
+      direction: rtl;
+    }
+    .app-logo-dot { width: 22px; height: 22px; background: var(--gold); border-radius: 50%; }
+
+    .app-body { padding: 8px 8px; }
+    .app-search {
+      background: #f0f0f0; border-radius: 6px;
+      padding: 5px 8px; margin-bottom: 8px;
+      font-size: 8px; color: #999;
+      font-family: 'Noto Sans Arabic', sans-serif;
+      direction: rtl;
+    }
+    .app-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+    .app-card {
+      background: #f8f8f8; border-radius: 8px; border: 1px solid #eee;
+      padding: 8px 6px; text-align: center;
+    }
+    .app-card-icon { font-size: 14px; margin-bottom: 3px; }
+    .app-card-text {
+      font-size: 7px; color: #555;
+      font-family: 'Noto Sans Arabic', sans-serif; direction: rtl;
+    }
+
+    .app-entity-row {
+      display: flex; align-items: center; gap: 6px;
+      background: white; border: 1px solid #ddd;
+      border-radius: 6px; padding: 6px 8px; margin-top: 6px;
+    }
+    .entity-logo { width: 22px; height: 22px; background: #8aa; border-radius: 4px; flex-shrink: 0; }
+    .entity-name { font-size: 7px; color: #444; font-family: 'Noto Sans Arabic', sans-serif; direction: rtl; }
+
+    .app-btn {
+      margin-top: 8px; width: 100%; padding: 6px;
+      background: #c9a84c; border: none; border-radius: 6px;
+      font-size: 9px; font-weight: 700; color: white;
+      font-family: 'Noto Sans Arabic', sans-serif;
+    }
+
+    /* ── ANIMATIONS ──────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes floatPhone {
+      0%, 100% { transform: translate(-78%, -46%) rotate(-8deg) translateY(0px); }
+      50%       { transform: translate(-78%, -46%) rotate(-8deg) translateY(-10px); }
+    }
+    @keyframes floatPhoneFront {
+      0%, 100% { transform: translate(-30%, -50%) rotate(5deg) translateY(0px); }
+      50%       { transform: translate(-30%, -50%) rotate(5deg) translateY(-14px); }
+    }
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(201,168,76,0.2); }
+      50%       { box-shadow: 0 0 30px rgba(201,168,76,0.4); }
+    }
+
+    .logos-row   { animation: fadeUp 0.6s ease both; }
+    .hero-text   { animation: fadeUp 0.6s 0.15s ease both; }
+    .bottom-row  { animation: fadeUp 0.6s 0.3s ease both; }
+    .right-col   { animation: fadeUp 0.6s 0.1s ease both; }
+
+    .phone-back  { animation: floatPhone 5s ease-in-out infinite; }
+    .phone-front { animation: floatPhoneFront 5s ease-in-out infinite; }
+    .seal-badge  { animation: glowPulse 3s ease-in-out infinite; }
+
+    /* ── RESPONSIVE TWEAKS ───────────────────────────────── */
+    @media (max-width: 960px) {
+      body { overflow: auto; }
+      html, body { height: auto; }
+      .page { flex-direction: column; height: auto; }
+      .left-col { width: 100%; padding: 24px 24px 16px; }
+      .right-col { width: 100%; height: 340px; }
+      .phone-back { transform: translate(-68%, -46%) rotate(-8deg); }
+      .phone-front { transform: translate(-20%, -50%) rotate(5deg); }
+    }
+    @media (max-width: 600px) {
+      .bottom-row { flex-direction: column; align-items: flex-start; gap: 20px; }
+      .store-buttons { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background layers -->
+  <div class="bg-layer"></div>
+  <div class="bg-mesh"></div>
+  <div class="bg-lines"></div>
+  <div class="bg-glow"></div>
+
+  <div class="page">
+
+    <!-- ── LEFT COLUMN ── -->
+    <div class="left-col">
+
+      <!-- Logos -->
+      <div class="logos-row">
+        <!-- EGSEP -->
+        <div class="egsep-logo">
+          <svg class="egsep-emblem" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- UAE Eagle emblem approximation -->
+            <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(201,168,76,0.3)" stroke-width="1"/>
+            <!-- Eagle body -->
+            <ellipse cx="50" cy="55" rx="12" ry="16" fill="#c9a84c" opacity="0.9"/>
+            <!-- Wings -->
+            <path d="M38 52 Q20 42 15 35 Q22 38 30 48 Z" fill="#c9a84c" opacity="0.85"/>
+            <path d="M62 52 Q80 42 85 35 Q78 38 70 48 Z" fill="#c9a84c" opacity="0.85"/>
+            <!-- Head -->
+            <circle cx="50" cy="36" r="9" fill="#c9a84c"/>
+            <!-- Beak -->
+            <path d="M50 40 L45 44 L50 43 Z" fill="#8B6914"/>
+            <!-- Eye -->
+            <circle cx="53" cy="34" r="2" fill="#8B6914"/>
+            <!-- Tail -->
+            <path d="M44 70 L50 78 L56 70 Z" fill="#c9a84c" opacity="0.8"/>
+            <!-- Stars/details -->
+            <circle cx="50" cy="20" r="2.5" fill="#e2c46e" opacity="0.7"/>
+            <circle cx="35" cy="24" r="1.5" fill="#e2c46e" opacity="0.5"/>
+            <circle cx="65" cy="24" r="1.5" fill="#e2c46e" opacity="0.5"/>
+          </svg>
+          <div class="egsep-text">
+            <span class="ar">برنامج الإمارات للخدمة الحكومية المتميزة</span>
+            <span class="en">Emirates Government Service Excellence Program</span>
+          </div>
+        </div>
+
+        <!-- UAE MS Brand -->
+        <div class="uaems-logo">
+          <div class="uaems-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="10" cy="10" r="6" stroke="white" stroke-width="2.2"/>
+              <path d="M14.5 14.5L19 19" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="10" cy="10" r="2.5" fill="white" opacity="0.5"/>
+            </svg>
+          </div>
+          <div class="uaems-text">
+            <span class="ar">المتسوق السري في الإمارات</span>
+            <span class="en">UAEMysteryShopper</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Text -->
+      <div class="hero-text">
+        <p class="ar-sub">شارك في تحسين الخدمات الحكومية من خلال</p>
+        <h1 class="ar-main">تطبيق المتسوق السري</h1>
+        <p class="en-sub">Be part of improving government services through</p>
+        <h2 class="en-main">The Mystery Shopper App</h2>
+      </div>
+
+      <!-- Bottom: QR + Stores + Badges -->
+      <div class="bottom-row">
+
+        <!-- QR + stores -->
+        <div class="qr-section">
+          <div class="qr-inner">
+            <!-- QR Code SVG -->
+            <div class="qr-box">
+              <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <!-- QR code pattern approximation -->
+                <rect width="100" height="100" fill="white"/>
+                <!-- Top-left finder -->
+                <rect x="5" y="5" width="28" height="28" rx="2" fill="#111"/>
+                <rect x="9" y="9" width="20" height="20" rx="1" fill="white"/>
+                <rect x="13" y="13" width="12" height="12" rx="1" fill="#111"/>
+                <!-- Top-right finder -->
+                <rect x="67" y="5" width="28" height="28" rx="2" fill="#111"/>
+                <rect x="71" y="9" width="20" height="20" rx="1" fill="white"/>
+                <rect x="75" y="13" width="12" height="12" rx="1" fill="#111"/>
+                <!-- Bottom-left finder -->
+                <rect x="5" y="67" width="28" height="28" rx="2" fill="#111"/>
+                <rect x="9" y="71" width="20" height="20" rx="1" fill="white"/>
+                <rect x="13" y="75" width="12" height="12" rx="1" fill="#111"/>
+                <!-- Data dots (random pattern) -->
+                <rect x="38" y="5" width="5" height="5" fill="#111"/>
+                <rect x="46" y="5" width="5" height="5" fill="#111"/>
+                <rect x="54" y="5" width="5" height="5" fill="#111"/>
+                <rect x="38" y="13" width="5" height="5" fill="#111"/>
+                <rect x="54" y="13" width="5" height="5" fill="#111"/>
+                <rect x="38" y="21" width="5" height="5" fill="#111"/>
+                <rect x="46" y="21" width="5" height="5" fill="#111"/>
+                <rect x="5" y="38" width="5" height="5" fill="#111"/>
+                <rect x="13" y="38" width="5" height="5" fill="#111"/>
+                <rect x="21" y="38" width="5" height="5" fill="#111"/>
+                <rect x="38" y="38" width="5" height="5" fill="#111"/>
+                <rect x="54" y="38" width="5" height="5" fill="#111"/>
+                <rect x="62" y="38" width="5" height="5" fill="#111"/>
+                <rect x="70" y="38" width="5" height="5" fill="#111"/>
+                <rect x="86" y="38" width="5" height="5" fill="#111"/>
+                <rect x="5" y="46" width="5" height="5" fill="#111"/>
+                <rect x="21" y="46" width="5" height="5" fill="#111"/>
+                <rect x="38" y="46" width="5" height="5" fill="#111"/>
+                <rect x="54" y="46" width="5" height="5" fill="#111"/>
+                <rect x="78" y="46" width="5" height="5" fill="#111"/>
+                <rect x="86" y="46" width="5" height="5" fill="#111"/>
+                <rect x="13" y="54" width="5" height="5" fill="#111"/>
+                <rect x="29" y="54" width="5" height="5" fill="#111"/>
+                <rect x="46" y="54" width="5" height="5" fill="#111"/>
+                <rect x="62" y="54" width="5" height="5" fill="#111"/>
+                <rect x="70" y="54" width="5" height="5" fill="#111"/>
+                <rect x="86" y="54" width="5" height="5" fill="#111"/>
+                <rect x="38" y="62" width="5" height="5" fill="#111"/>
+                <rect x="54" y="62" width="5" height="5" fill="#111"/>
+                <rect x="70" y="62" width="5" height="5" fill="#111"/>
+                <rect x="78" y="62" width="5" height="5" fill="#111"/>
+                <rect x="46" y="70" width="5" height="5" fill="#111"/>
+                <rect x="62" y="70" width="5" height="5" fill="#111"/>
+                <rect x="86" y="70" width="5" height="5" fill="#111"/>
+                <rect x="38" y="78" width="5" height="5" fill="#111"/>
+                <rect x="54" y="78" width="5" height="5" fill="#111"/>
+                <rect x="70" y="78" width="5" height="5" fill="#111"/>
+                <rect x="46" y="86" width="5" height="5" fill="#111"/>
+                <rect x="62" y="86" width="5" height="5" fill="#111"/>
+                <rect x="78" y="86" width="5" height="5" fill="#111"/>
+                <rect x="86" y="86" width="5" height="5" fill="#111"/>
+              </svg>
+            </div>
+            <div class="qr-label">
+              <span class="ar">امسح الرمز<br>لتحميل التطبيق</span>
+              <span class="en">SCAN QR CODE<br>TO DOWNLOAD</span>
+            </div>
+          </div>
+
+          <!-- App Store Buttons -->
+          <div class="store-buttons">
+            <a href="https://apps.apple.com/ae/app/uae-mystery-shopper/id1472141321" class="store-btn" target="_blank">
+              <svg viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+              <div class="store-btn-text">
+                <span class="small">Download on the</span>
+                <span class="big">App Store</span>
+              </div>
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=com.mysteryshopperapplication.uae" class="store-btn" target="_blank">
+              <svg viewBox="0 0 24 24" fill="white"><path d="M3 20.5v-17c0-.83.94-1.3 1.6-.8l14 8.5c.6.37.6 1.23 0 1.6l-14 8.5c-.66.5-1.6.03-1.6-.8z" fill="#78C257"/><path d="M3 3.5l9 9L3 20.5V3.5z" fill="#4285F4"/><path d="M3 3.5l9 9 5.5-5.5L3 3.5z" fill="#EA4335"/><path d="M3 20.5l9-9 5.5 5.5L3 20.5z" fill="#FBBC05"/></svg>
+              <div class="store-btn-text">
+                <span class="small">Get it on</span>
+                <span class="big">Google Play</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Seal + WhatsApp -->
+        <div class="badges-section">
+          <div class="seal-badge">
+            <div class="seal-text">
+              <span class="ar-seal">كن متسوقنا السري</span>
+              BE OUR<br>MYSTERY<br>SHOPPER
+            </div>
+          </div>
+          <a href="https://wa.me/97147771000" class="whatsapp-btn" target="_blank">
+            <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+            </svg>
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── RIGHT COLUMN: Phone Mockups ── -->
+    <div class="right-col">
+      <div class="phones-container">
+
+        <!-- Back phone -->
+        <div class="phone phone-back">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="phone-screen-inner">
+              <div class="app-header">
+                <div class="app-logo-dot"></div>
+                <div class="app-header-text">المتسوق السري</div>
+              </div>
+              <div class="app-body">
+                <div class="app-search">ابحث عن جهة...</div>
+                <div class="app-grid">
+                  <div class="app-card">
+                    <div class="app-card-icon">🏛️</div>
+                    <div class="app-card-text">مراكز الخدمة</div>
+                  </div>
+                  <div class="app-card">
+                    <div class="app-card-icon">📞</div>
+                    <div class="app-card-text">مركز الاتصال</div>
+                  </div>
+                  <div class="app-card">
+                    <div class="app-card-icon">💻</div>
+                    <div class="app-card-text">الموقع الإلكتروني</div>
+                  </div>
+                  <div class="app-card">
+                    <div class="app-card-icon">📱</div>
+                    <div class="app-card-text">التطبيق الذكي</div>
+                  </div>
+                </div>
+                <div class="app-entity-row">
+                  <div class="entity-logo" style="background:#4a8a7c;"></div>
+                  <div class="entity-name">MOHRE - وزارة الموارد البشرية</div>
+                </div>
+                <div class="app-entity-row">
+                  <div class="entity-logo" style="background:#5a6a9a;"></div>
+                  <div class="entity-name">ICP - هيئة الهوية والجنسية</div>
+                </div>
+                <button class="app-btn">تقديم تقييم</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Front phone -->
+        <div class="phone phone-front">
+          <div class="phone-notch"></div>
+          <div class="phone-screen">
+            <div class="phone-screen-inner">
+              <div class="app-header">
+                <div class="app-logo-dot"></div>
+                <div class="app-header-text">أي من خدمات الجهة تريد تقييمها؟</div>
+              </div>
+              <div class="app-body">
+                <div class="app-grid">
+                  <div class="app-card" style="background:linear-gradient(135deg,#c9a84c22,#c9a84c11);">
+                    <div class="app-card-icon">📋</div>
+                    <div class="app-card-text">جميع مراكز الخدمة</div>
+                  </div>
+                  <div class="app-card">
+                    <div class="app-card-icon">🏠</div>
+                    <div class="app-card-text">مركز أبوظبي</div>
+                  </div>
+                  <div class="app-card">
+                    <div class="app-card-icon">🌆</div>
+                    <div class="app-card-text">مركز دبي</div>
+                  </div>
+                  <div class="app-card">
+                    <div class="app-card-icon">📍</div>
+                    <div class="app-card-text">مركز الشارقة</div>
+                  </div>
+                </div>
+                <div class="app-entity-row" style="margin-top:8px;">
+                  <div class="entity-logo" style="background:#7a4a9a;"></div>
+                  <div class="entity-name">EHS - هيئة الصحة - دبي</div>
+                </div>
+                <div class="app-entity-row">
+                  <div class="entity-logo" style="background:#4a7a4a;"></div>
+                  <div class="entity-name">MOCD - وزارة التنمية المجتمعية</div>
+                </div>
+                <button class="app-btn">تأكيد الاختيار</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── WEBCALL WIDGET ── -->
+<script
+  src="https://cloud.livekit.io/embed-popup.js"
+  data-lk-agent="CA_dTyLuKXkTsS5"
+  data-lk-color="#002cf2"
+></script>
+
+</body>
+</html>
