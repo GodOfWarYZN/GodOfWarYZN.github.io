@@ -1,701 +1,806 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UAE Mystery Shopper</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;700;900&family=Barlow+Condensed:wght@400;700;800&family=Barlow:wght@300;400;600&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bank Nizwa — Islamic Banking, Built for How You Live</title>
+<meta name="description" content="Bank Nizwa is Oman's first dedicated Islamic bank — Shari'a-compliant accounts, financing and cards, with real advisors a call away.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --plum:#2E1330;
+    --plum-2:#3D1B3F;
+    --magenta:#92275C;
+    --magenta-dark:#6E1C46;
+    --gold:#C79A4B;
+    --gold-light:#E4C77E;
+    --sand:#F6F1E6;
+    --ivory:#FFFFFF;
+    --ink:#241B22;
+    --muted:#776875;
+    --line:rgba(46,19,48,0.14);
+    --display:'Fraunces', Georgia, serif;
+    --body:'Inter', -apple-system, Segoe UI, Roboto, sans-serif;
+    --max:1180px;
+  }
 
-    :root {
-      --gold: #c9a84c;
-      --gold-light: #e2c46e;
-      --white: #f1f5f5;
-      --bg-dark: #2b2d35;
-      --bg-mid: #363840;
-      --text-light: rgba(241,245,245,0.85);
-    }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
 
-    html, body {
-      width: 100%; height: 100%;
-      overflow: hidden;
-    }
+  body{
+    margin:0;
+    font-family:var(--body);
+    color:var(--ink);
+    background:var(--sand);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
 
-    body {
-      font-family: 'Barlow', sans-serif;
-      background: var(--bg-dark);
-      color: var(--white);
-      position: relative;
-    }
+  h1,h2,h3{
+    font-family:var(--display);
+    color:var(--plum);
+    margin:0;
+    font-weight:600;
+    line-height:1.15;
+  }
 
-    /* ── BACKGROUND ─────────────────────────────────────── */
-    .bg-layer {
-      position: fixed; inset: 0; z-index: 0;
-      background: radial-gradient(ellipse at 30% 50%, #3c3f4e 0%, #252830 55%, #1e2028 100%);
-    }
+  p{margin:0;}
+  a{color:inherit;text-decoration:none;}
+  ul{list-style:none;margin:0;padding:0;}
+  img,svg{display:block;max-width:100%;}
+  button{font:inherit;}
 
-    /* Network mesh SVG overlay */
-    .bg-mesh {
-      position: fixed; inset: 0; z-index: 1; opacity: 0.18;
-      background-image:
-        radial-gradient(circle, rgba(180,180,210,0.5) 1px, transparent 1px),
-        radial-gradient(circle, rgba(180,180,210,0.3) 1px, transparent 1px);
-      background-size: 60px 60px, 30px 30px;
-      background-position: 0 0, 15px 15px;
-    }
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible{
+    outline:2px solid var(--gold);
+    outline-offset:3px;
+    border-radius:2px;
+  }
 
-    /* Diagonal line network */
-    .bg-lines {
-      position: fixed; inset: 0; z-index: 1; opacity: 0.07;
-      background-image:
-        linear-gradient(60deg, rgba(200,200,230,0.6) 1px, transparent 1px),
-        linear-gradient(-60deg, rgba(200,200,230,0.6) 1px, transparent 1px),
-        linear-gradient(0deg, rgba(200,200,230,0.3) 1px, transparent 1px);
-      background-size: 80px 80px, 80px 80px, 40px 40px;
-    }
+  .wrap{
+    max-width:var(--max);
+    margin:0 auto;
+    padding:0 24px;
+  }
 
-    /* Right-side subtle radial glow */
-    .bg-glow {
-      position: fixed; right: 0; top: 0; width: 55%; height: 100%; z-index: 1;
-      background: radial-gradient(ellipse at 80% 50%, rgba(80,85,110,0.35) 0%, transparent 65%);
-    }
+  .divider{
+    height:1px;
+    background:var(--line);
+    position:relative;
+  }
+  .divider::after{
+    content:"";
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:7px;
+    height:7px;
+    background:var(--gold);
+    transform:translate(-50%,-50%) rotate(45deg);
+  }
 
-    /* ── LAYOUT ─────────────────────────────────────────── */
-    .page {
-      position: relative; z-index: 10;
-      display: flex; align-items: stretch;
-      width: 100%; height: 100vh;
-      padding: 0;
-    }
+  /* ---------- Header / Nav ---------- */
+  .site-header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:var(--plum);
+    border-bottom:1px solid rgba(255,255,255,0.08);
+  }
+  .nav-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px 0;
+    gap:24px;
+  }
+  .wordmark{
+    display:flex;
+    flex-direction:column;
+    line-height:1;
+    color:var(--ivory);
+  }
+  .wordmark .name{
+    font-family:var(--display);
+    font-size:1.35rem;
+    font-weight:600;
+    letter-spacing:0.01em;
+  }
+  .wordmark .tag{
+    font-size:0.68rem;
+    color:var(--gold-light);
+    margin-top:5px;
+    letter-spacing:0.03em;
+  }
+  .nav-links{
+    display:flex;
+    gap:28px;
+    align-items:center;
+  }
+  .nav-links a{
+    color:rgba(255,255,255,0.82);
+    font-size:0.94rem;
+    padding:6px 0;
+    border-bottom:1px solid transparent;
+    transition:border-color 0.15s ease, color 0.15s ease;
+  }
+  .nav-links a:hover{
+    color:var(--ivory);
+    border-bottom-color:var(--gold);
+  }
+  .nav-actions{
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:11px 20px;
+    font-size:0.92rem;
+    font-weight:600;
+    border-radius:3px;
+    border:1px solid transparent;
+    cursor:pointer;
+  }
+  .btn-primary{
+    background:var(--magenta);
+    color:var(--ivory);
+    transition:background 0.15s ease;
+  }
+  .btn-primary:hover{background:var(--magenta-dark);}
+  .btn-ghost-light{
+    background:transparent;
+    border-color:rgba(255,255,255,0.35);
+    color:var(--ivory);
+  }
+  .btn-ghost-light:hover{border-color:var(--gold);color:var(--gold-light);}
+  .btn-outline{
+    background:transparent;
+    border-color:var(--plum);
+    color:var(--plum);
+  }
+  .btn-outline:hover{border-color:var(--magenta);color:var(--magenta);}
 
-    .left-col {
-      width: 58%;
-      display: flex; flex-direction: column;
-      padding: 28px 30px 24px 60px;
-      justify-content: space-between;
-    }
+  .nav-toggle{
+    display:none;
+    background:transparent;
+    border:0;
+    color:var(--ivory);
+    padding:6px;
+    cursor:pointer;
+  }
+  .nav-toggle svg{width:24px;height:24px;}
 
-    .right-col {
-      width: 42%;
-      display: flex; align-items: center; justify-content: center;
-      padding-top: 40px;
-      position: relative;
-    }
+  /* ---------- Hero ---------- */
+  .hero{
+    background:linear-gradient(180deg,var(--plum) 0%, var(--plum-2) 100%);
+    color:var(--ivory);
+    padding:64px 0 56px;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    gap:56px;
+    align-items:start;
+  }
+  .hero-copy h1{
+    color:var(--ivory);
+    font-size:clamp(2.2rem,4.4vw,3.4rem);
+    max-width:14ch;
+    animation:rise 0.6s ease both;
+  }
+  .hero-copy p{
+    margin-top:20px;
+    max-width:46ch;
+    color:rgba(255,255,255,0.78);
+    font-size:1.05rem;
+    animation:rise 0.6s ease 0.08s both;
+  }
+  .hero-ctas{
+    display:flex;
+    gap:14px;
+    margin-top:32px;
+    flex-wrap:wrap;
+    animation:rise 0.6s ease 0.16s both;
+  }
+  @keyframes rise{
+    from{opacity:0; transform:translateY(10px);}
+    to{opacity:1; transform:translateY(0);}
+  }
 
-    /* ── LOGOS TOP ───────────────────────────────────────── */
-    .logos-row {
-      display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
-    }
+  .hero-panel{
+    background:var(--ivory);
+    color:var(--ink);
+    border-top:3px solid var(--gold);
+    padding:26px 26px 10px;
+  }
+  .hero-panel h2{
+    font-size:1.1rem;
+    color:var(--plum);
+  }
+  .hero-panel-list{
+    margin-top:14px;
+  }
+  .hero-panel-list li a{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 0;
+    border-top:1px solid var(--line);
+    font-size:0.95rem;
+    color:var(--ink);
+  }
+  .hero-panel-list li a:hover{color:var(--magenta);}
+  .hero-panel-list li a svg{width:16px;height:16px;flex:none;opacity:0.55;}
 
-    /* EGSEP Logo */
-    .egsep-logo {
-      display: flex; align-items: center; gap: 10px;
-    }
-    .egsep-emblem {
-      width: 54px; height: 54px; flex-shrink: 0;
-    }
-    .egsep-text {
-      display: flex; flex-direction: column; line-height: 1.2;
-    }
-    .egsep-text .ar {
-      font-family: 'Noto Sans Arabic', sans-serif;
-      font-size: 9.5px; font-weight: 400;
-      color: var(--gold-light); letter-spacing: 0.01em;
-      direction: rtl;
-    }
-    .egsep-text .en {
-      font-size: 8px; font-weight: 400;
-      color: rgba(200,180,130,0.9); letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
+  /* ---------- Trust strip ---------- */
+  .trust{
+    background:var(--ivory);
+    border-bottom:1px solid var(--line);
+  }
+  .trust-row{
+    display:flex;
+    flex-wrap:wrap;
+    padding:20px 0;
+  }
+  .trust-row li{
+    flex:1 1 220px;
+    padding:6px 24px;
+    border-left:1px solid var(--line);
+    font-size:0.88rem;
+    color:var(--muted);
+  }
+  .trust-row li:first-child{border-left:0;}
+  .trust-row li strong{
+    display:block;
+    color:var(--plum);
+    font-family:var(--display);
+    font-size:1rem;
+    font-weight:600;
+    margin-bottom:2px;
+  }
 
-    /* UAE MS Logo */
-    .uaems-logo {
-      display: flex; align-items: center; gap: 12px; margin-top: 4px;
-    }
-    .uaems-icon {
-      width: 42px; height: 42px;
-      background: var(--gold);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 0 18px rgba(201,168,76,0.4);
-      flex-shrink: 0;
-    }
-    .uaems-icon svg { width: 24px; height: 24px; }
-    .uaems-text { display: flex; flex-direction: column; line-height: 1.25; }
-    .uaems-text .ar {
-      font-family: 'Noto Sans Arabic', sans-serif;
-      font-size: 11px; font-weight: 700; color: var(--gold-light);
-      direction: rtl;
-    }
-    .uaems-text .en {
-      font-size: 20px; font-weight: 800; letter-spacing: -0.02em;
-      font-family: 'Barlow Condensed', sans-serif;
-      color: var(--gold-light);
-    }
+  /* ---------- Section shell ---------- */
+  section{padding:80px 0;}
+  .section-head{
+    max-width:56ch;
+    margin-bottom:44px;
+  }
+  .section-head h2{font-size:clamp(1.6rem,3vw,2.1rem);}
+  .section-head p{
+    margin-top:12px;
+    color:var(--muted);
+    font-size:1.02rem;
+  }
 
-    /* ── HERO TEXT ───────────────────────────────────────── */
-    .hero-text {
-      flex: 1;
-      display: flex; flex-direction: column; justify-content: center;
-      padding: 10px 0 6px;
-    }
+  /* ---------- Offers ---------- */
+  .offers-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:2px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .offer-card{
+    background:var(--ivory);
+    padding:30px;
+    border-left:3px solid var(--gold);
+  }
+  .offer-card .icon{
+    width:34px;height:34px;
+    color:var(--magenta);
+    margin-bottom:18px;
+  }
+  .offer-card h3{font-size:1.15rem;}
+  .offer-card p{
+    margin-top:10px;
+    color:var(--muted);
+    font-size:0.95rem;
+  }
+  .offer-card .learn{
+    display:inline-block;
+    margin-top:16px;
+    font-size:0.9rem;
+    font-weight:600;
+    color:var(--magenta);
+    border-bottom:1px solid transparent;
+  }
+  .offer-card .learn:hover{border-bottom-color:var(--magenta);}
 
-    .ar-sub {
-      font-family: 'Noto Sans Arabic', sans-serif;
-      font-size: clamp(14px, 1.5vw, 22px);
-      font-weight: 300; color: var(--text-light);
-      direction: rtl; margin-bottom: 4px;
-      letter-spacing: 0.01em;
-    }
-    .ar-main {
-      font-family: 'Noto Sans Arabic', sans-serif;
-      font-size: clamp(24px, 3vw, 46px);
-      font-weight: 900; color: var(--white);
-      direction: rtl; margin-bottom: 20px;
-      line-height: 1.1;
-    }
-    .en-sub {
-      font-size: clamp(11px, 1.1vw, 16px);
-      font-weight: 300; color: var(--text-light);
-      letter-spacing: 0.12em; text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-    .en-main {
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: clamp(22px, 2.8vw, 42px);
-      font-weight: 800; color: var(--white);
-      letter-spacing: 0.02em; text-transform: uppercase;
-    }
+  /* ---------- Priority editorial ---------- */
+  .priority{background:var(--plum);color:var(--ivory);}
+  .priority-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:56px;
+    align-items:center;
+  }
+  .priority h2{color:var(--ivory); font-size:clamp(1.6rem,3vw,2.2rem); max-width:16ch;}
+  .priority p{
+    margin-top:18px;
+    color:rgba(255,255,255,0.78);
+    max-width:44ch;
+  }
+  .priority .btn{margin-top:26px;}
+  .benefit-list li{
+    display:flex;
+    gap:14px;
+    padding:16px 0;
+    border-top:1px solid rgba(255,255,255,0.14);
+    font-size:1rem;
+  }
+  .benefit-list li:last-child{border-bottom:1px solid rgba(255,255,255,0.14);}
+  .benefit-list li::before{
+    content:"";
+    width:7px;height:7px;
+    margin-top:8px;
+    background:var(--gold);
+    transform:rotate(45deg);
+    flex:none;
+  }
 
-    /* ── BOTTOM ROW ──────────────────────────────────────── */
-    .bottom-row {
-      display: flex; align-items: flex-end; gap: 40px;
-    }
+  /* ---------- Cards lineup ---------- */
+  .card-strip{
+    display:flex;
+    gap:18px;
+    overflow-x:auto;
+    padding-bottom:8px;
+    scrollbar-width:thin;
+  }
+  .card-tile{
+    flex:0 0 190px;
+    height:120px;
+    border-radius:8px;
+    padding:16px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    color:var(--ivory);
+    font-family:var(--display);
+    font-weight:600;
+  }
+  .card-tile span{font-size:0.72rem; font-family:var(--body); font-weight:500; opacity:0.75;}
+  .card-tile.t1{background:linear-gradient(135deg,#3D1B3F,#6E1C46);}
+  .card-tile.t2{background:linear-gradient(135deg,#6E1C46,#92275C);}
+  .card-tile.t3{background:linear-gradient(135deg,#92275C,#B9436F);}
+  .card-tile.t4{background:linear-gradient(135deg,#2E1330,#3D1B3F);}
+  .card-tile.t5{background:linear-gradient(135deg,#8A6A24,#C79A4B);}
+  .card-tile.t6{background:linear-gradient(135deg,#4C4C4C,#7A7A7A);}
+  .card-tile.t7{background:linear-gradient(135deg,#1C1C1C,#3A3A3A);}
 
-    /* QR Section */
-    .qr-section { display: flex; flex-direction: column; gap: 12px; }
-    .qr-inner { display: flex; align-items: center; gap: 14px; }
-    .qr-box {
-      width: 90px; height: 90px; flex-shrink: 0;
-      background: white; border-radius: 8px; padding: 6px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-    }
-    .qr-box svg { width: 100%; height: 100%; }
-    .qr-label { display: flex; flex-direction: column; gap: 2px; }
-    .qr-label .ar {
-      font-family: 'Noto Sans Arabic', sans-serif;
-      font-size: 13px; font-weight: 700; color: var(--white);
-      direction: rtl; line-height: 1.3;
-    }
-    .qr-label .en {
-      font-size: 11px; font-weight: 700;
-      color: var(--white); letter-spacing: 0.06em;
-      text-transform: uppercase; line-height: 1.3;
-    }
+  /* ---------- News ---------- */
+  .news-list li{
+    display:grid;
+    grid-template-columns:1fr 3fr auto;
+    gap:24px;
+    align-items:baseline;
+    padding:22px 0;
+    border-top:1px solid var(--line);
+  }
+  .news-list li:last-child{border-bottom:1px solid var(--line);}
+  .news-cat{font-size:0.82rem; color:var(--gold); font-weight:600;}
+  .news-body h3{font-size:1.05rem; font-family:var(--body); font-weight:600; color:var(--ink);}
+  .news-body p{margin-top:6px; color:var(--muted); font-size:0.92rem;}
+  .news-list a.read{font-size:0.88rem; font-weight:600; color:var(--magenta); white-space:nowrap;}
 
-    /* Store Buttons */
-    .store-buttons { display: flex; gap: 10px; align-items: center; }
-    .store-btn {
-      display: flex; align-items: center; gap: 8px;
-      background: rgba(0,0,0,0.55);
-      border: 1.5px solid rgba(255,255,255,0.25);
-      border-radius: 8px;
-      padding: 7px 14px;
-      text-decoration: none; color: white;
-      transition: border-color 0.2s, background 0.2s;
-      min-width: 120px;
-    }
-    .store-btn:hover {
-      border-color: var(--gold);
-      background: rgba(201,168,76,0.1);
-    }
-    .store-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
-    .store-btn-text { display: flex; flex-direction: column; line-height: 1.2; }
-    .store-btn-text .small { font-size: 8px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.75; }
-    .store-btn-text .big { font-size: 13px; font-weight: 600; }
+  /* ---------- CTA band ---------- */
+  .cta-band{
+    background:var(--ivory);
+    border:1px solid var(--line);
+    padding:48px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:32px;
+    flex-wrap:wrap;
+  }
+  .cta-band h2{font-size:1.5rem;}
+  .cta-band p{margin-top:8px; color:var(--muted);}
 
-    /* Badges */
-    .badges-section { display: flex; align-items: flex-end; gap: 16px; }
+  /* ---------- Footer ---------- */
+  footer{
+    background:var(--plum);
+    color:rgba(255,255,255,0.75);
+    padding:64px 0 28px;
+  }
+  .footer-grid{
+    display:grid;
+    grid-template-columns:1.3fr repeat(4,1fr);
+    gap:32px;
+  }
+  .footer-grid h4{
+    color:var(--gold-light);
+    font-family:var(--body);
+    font-size:0.85rem;
+    font-weight:600;
+    margin-bottom:16px;
+    letter-spacing:0.01em;
+  }
+  .footer-grid li{margin-bottom:10px;}
+  .footer-grid a{font-size:0.9rem; color:rgba(255,255,255,0.72);}
+  .footer-grid a:hover{color:var(--ivory);}
+  .footer-brand .name{
+    font-family:var(--display);
+    color:var(--ivory);
+    font-size:1.2rem;
+    font-weight:600;
+  }
+  .footer-brand p{
+    margin-top:14px;
+    font-size:0.88rem;
+    max-width:32ch;
+    color:rgba(255,255,255,0.6);
+  }
+  .social-row{display:flex; gap:10px; margin-top:20px;}
+  .social-row a{
+    width:32px;height:32px;
+    border:1px solid rgba(255,255,255,0.25);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .social-row a:hover{border-color:var(--gold);}
+  .social-row svg{width:14px;height:14px;}
 
-    .seal-badge {
-      width: 90px; height: 90px;
-      border: 2px solid var(--gold);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      position: relative;
-      background: radial-gradient(circle, rgba(201,168,76,0.12), transparent);
-      box-shadow: 0 0 20px rgba(201,168,76,0.2);
-    }
-    .seal-badge::before {
-      content: '';
-      position: absolute; inset: 5px;
-      border: 1px dashed rgba(201,168,76,0.5);
-      border-radius: 50%;
-    }
-    .seal-text {
-      text-align: center; font-size: 7.5px; font-weight: 700;
-      letter-spacing: 0.04em; line-height: 1.3;
-      color: var(--gold-light);
-      font-family: 'Barlow Condensed', sans-serif;
-      text-transform: uppercase;
-      padding: 8px;
-    }
-    .seal-text .ar-seal {
-      font-family: 'Noto Sans Arabic', sans-serif;
-      direction: rtl; display: block;
-      font-size: 7px;
-    }
+  .footer-bottom{
+    margin-top:52px;
+    padding-top:24px;
+    border-top:1px solid rgba(255,255,255,0.14);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+    font-size:0.82rem;
+    color:rgba(255,255,255,0.55);
+  }
+  .app-badges{display:flex; gap:10px;}
+  .app-badges span{
+    border:1px solid rgba(255,255,255,0.25);
+    padding:8px 14px;
+    border-radius:4px;
+    font-size:0.78rem;
+  }
 
-    .whatsapp-btn {
-      width: 80px; height: 80px;
-      background: #25d366;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      text-decoration: none;
-      box-shadow: 0 4px 18px rgba(37,211,102,0.45);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .whatsapp-btn:hover {
-      transform: scale(1.08);
-      box-shadow: 0 6px 24px rgba(37,211,102,0.6);
-    }
-    .whatsapp-btn svg { width: 42px; height: 42px; }
+  /* ---------- Responsive ---------- */
+  @media (max-width:900px){
+    .hero-grid{grid-template-columns:1fr;}
+    .offers-grid{grid-template-columns:1fr;}
+    .priority-grid{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+    .footer-brand{grid-column:1 / -1;}
+    .cta-band{flex-direction:column; align-items:flex-start;}
+  }
 
-    /* ── PHONE MOCKUP ────────────────────────────────────── */
-    .phones-container {
-      position: relative; width: 100%; height: 100%;
-      display: flex; align-items: center; justify-content: center;
+  @media (max-width:760px){
+    .nav-links,.nav-actions .btn-ghost-light{display:none;}
+    .nav-toggle{display:inline-flex;}
+    .site-header.open .nav-links{
+      display:flex;
+      position:absolute;
+      top:100%;
+      left:0;
+      right:0;
+      background:var(--plum);
+      flex-direction:column;
+      gap:0;
+      padding:8px 24px 20px;
+      border-top:1px solid rgba(255,255,255,0.1);
     }
-
-    .phone {
-      position: absolute;
-      width: 200px;
-      background: linear-gradient(160deg, #3a3d4a 0%, #22242c 100%);
-      border-radius: 28px;
-      border: 2px solid rgba(255,255,255,0.12);
-      box-shadow: 0 30px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.05);
-      overflow: hidden;
-    }
-
-    .phone-back {
-      left: 50%; top: 50%;
-      transform: translate(-78%, -46%) rotate(-8deg);
-      width: 185px;
-      opacity: 0.82;
-    }
-    .phone-front {
-      left: 50%; top: 50%;
-      transform: translate(-30%, -50%) rotate(5deg);
-      z-index: 2;
-      width: 205px;
-    }
-
-    .phone-screen {
-      width: 100%;
-      background: #f0f0f0;
-      overflow: hidden;
-    }
-    .phone-screen-inner {
-      padding: 0;
-      background: white;
-    }
-
-    /* Phone notch */
-    .phone-notch {
-      height: 28px;
-      background: #22242c;
-      display: flex; align-items: center; justify-content: center;
-      position: relative;
-    }
-    .phone-notch::after {
-      content: '';
-      width: 70px; height: 14px;
-      background: #22242c;
-      border-radius: 0 0 10px 10px;
-      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-    }
-
-    /* App UI simulation */
-    .app-header {
-      background: #f7f7f7;
-      padding: 8px 10px 6px;
-      display: flex; align-items: center; justify-content: space-between;
-      border-bottom: 1px solid #e5e5e5;
-    }
-    .app-header-text {
-      font-size: 10px; font-weight: 700; color: #333;
-      font-family: 'Noto Sans Arabic', sans-serif;
-      direction: rtl;
-    }
-    .app-logo-dot { width: 22px; height: 22px; background: var(--gold); border-radius: 50%; }
-
-    .app-body { padding: 8px 8px; }
-    .app-search {
-      background: #f0f0f0; border-radius: 6px;
-      padding: 5px 8px; margin-bottom: 8px;
-      font-size: 8px; color: #999;
-      font-family: 'Noto Sans Arabic', sans-serif;
-      direction: rtl;
-    }
-    .app-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 6px;
-    }
-    .app-card {
-      background: #f8f8f8; border-radius: 8px; border: 1px solid #eee;
-      padding: 8px 6px; text-align: center;
-    }
-    .app-card-icon { font-size: 14px; margin-bottom: 3px; }
-    .app-card-text {
-      font-size: 7px; color: #555;
-      font-family: 'Noto Sans Arabic', sans-serif; direction: rtl;
-    }
-
-    .app-entity-row {
-      display: flex; align-items: center; gap: 6px;
-      background: white; border: 1px solid #ddd;
-      border-radius: 6px; padding: 6px 8px; margin-top: 6px;
-    }
-    .entity-logo { width: 22px; height: 22px; background: #8aa; border-radius: 4px; flex-shrink: 0; }
-    .entity-name { font-size: 7px; color: #444; font-family: 'Noto Sans Arabic', sans-serif; direction: rtl; }
-
-    .app-btn {
-      margin-top: 8px; width: 100%; padding: 6px;
-      background: #c9a84c; border: none; border-radius: 6px;
-      font-size: 9px; font-weight: 700; color: white;
-      font-family: 'Noto Sans Arabic', sans-serif;
-    }
-
-    /* ── ANIMATIONS ──────────────────────────────────────── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(22px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes floatPhone {
-      0%, 100% { transform: translate(-78%, -46%) rotate(-8deg) translateY(0px); }
-      50%       { transform: translate(-78%, -46%) rotate(-8deg) translateY(-10px); }
-    }
-    @keyframes floatPhoneFront {
-      0%, 100% { transform: translate(-30%, -50%) rotate(5deg) translateY(0px); }
-      50%       { transform: translate(-30%, -50%) rotate(5deg) translateY(-14px); }
-    }
-    @keyframes glowPulse {
-      0%, 100% { box-shadow: 0 0 20px rgba(201,168,76,0.2); }
-      50%       { box-shadow: 0 0 30px rgba(201,168,76,0.4); }
-    }
-
-    .logos-row   { animation: fadeUp 0.6s ease both; }
-    .hero-text   { animation: fadeUp 0.6s 0.15s ease both; }
-    .bottom-row  { animation: fadeUp 0.6s 0.3s ease both; }
-    .right-col   { animation: fadeUp 0.6s 0.1s ease both; }
-
-    .phone-back  { animation: floatPhone 5s ease-in-out infinite; }
-    .phone-front { animation: floatPhoneFront 5s ease-in-out infinite; }
-    .seal-badge  { animation: glowPulse 3s ease-in-out infinite; }
-
-    /* ── RESPONSIVE TWEAKS ───────────────────────────────── */
-    @media (max-width: 960px) {
-      body { overflow: auto; }
-      html, body { height: auto; }
-      .page { flex-direction: column; height: auto; }
-      .left-col { width: 100%; padding: 24px 24px 16px; }
-      .right-col { width: 100%; height: 340px; }
-      .phone-back { transform: translate(-68%, -46%) rotate(-8deg); }
-      .phone-front { transform: translate(-20%, -50%) rotate(5deg); }
-    }
-    @media (max-width: 600px) {
-      .bottom-row { flex-direction: column; align-items: flex-start; gap: 20px; }
-      .store-buttons { flex-direction: column; }
-    }
-  </style>
+    .site-header.open .nav-links a{padding:12px 0; width:100%;}
+    .trust-row li{border-left:0; border-top:1px solid var(--line);}
+    .trust-row li:first-child{border-top:0;}
+    .news-list li{grid-template-columns:1fr; gap:6px;}
+  }
+</style>
 </head>
 <body>
 
-  <!-- Background layers -->
-  <div class="bg-layer"></div>
-  <div class="bg-mesh"></div>
-  <div class="bg-lines"></div>
-  <div class="bg-glow"></div>
+<header class="site-header" id="siteHeader">
+  <div class="wrap nav-row">
+    <a href="#top" class="wordmark">
+      <span class="name">Bank Nizwa</span>
+      <span class="tag">Islamic Banking, Since 2013</span>
+    </a>
 
-  <div class="page">
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#offers">Personal</a>
+      <a href="#priority">Priority</a>
+      <a href="#cards">Cards</a>
+      <a href="#news">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
 
-    <!-- ── LEFT COLUMN ── -->
-    <div class="left-col">
+    <div class="nav-actions">
+      <a href="#" class="btn btn-ghost-light">Internet Banking</a>
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="siteHeader" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
 
-      <!-- Logos -->
-      <div class="logos-row">
-        <!-- EGSEP -->
-        <div class="egsep-logo">
-          <svg class="egsep-emblem" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- UAE Eagle emblem approximation -->
-            <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(201,168,76,0.3)" stroke-width="1"/>
-            <!-- Eagle body -->
-            <ellipse cx="50" cy="55" rx="12" ry="16" fill="#c9a84c" opacity="0.9"/>
-            <!-- Wings -->
-            <path d="M38 52 Q20 42 15 35 Q22 38 30 48 Z" fill="#c9a84c" opacity="0.85"/>
-            <path d="M62 52 Q80 42 85 35 Q78 38 70 48 Z" fill="#c9a84c" opacity="0.85"/>
-            <!-- Head -->
-            <circle cx="50" cy="36" r="9" fill="#c9a84c"/>
-            <!-- Beak -->
-            <path d="M50 40 L45 44 L50 43 Z" fill="#8B6914"/>
-            <!-- Eye -->
-            <circle cx="53" cy="34" r="2" fill="#8B6914"/>
-            <!-- Tail -->
-            <path d="M44 70 L50 78 L56 70 Z" fill="#c9a84c" opacity="0.8"/>
-            <!-- Stars/details -->
-            <circle cx="50" cy="20" r="2.5" fill="#e2c46e" opacity="0.7"/>
-            <circle cx="35" cy="24" r="1.5" fill="#e2c46e" opacity="0.5"/>
-            <circle cx="65" cy="24" r="1.5" fill="#e2c46e" opacity="0.5"/>
-          </svg>
-          <div class="egsep-text">
-            <span class="ar">برنامج الإمارات للخدمة الحكومية المتميزة</span>
-            <span class="en">Emirates Government Service Excellence Program</span>
-          </div>
-        </div>
+<main id="top">
 
-        <!-- UAE MS Brand -->
-        <div class="uaems-logo">
-          <div class="uaems-icon">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="10" cy="10" r="6" stroke="white" stroke-width="2.2"/>
-              <path d="M14.5 14.5L19 19" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
-              <circle cx="10" cy="10" r="2.5" fill="white" opacity="0.5"/>
-            </svg>
-          </div>
-          <div class="uaems-text">
-            <span class="ar">المتسوق السري في الإمارات</span>
-            <span class="en">UAEMysteryShopper</span>
-          </div>
+  <!-- Hero -->
+  <section class="hero" aria-label="Introduction">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <h1>Banking rooted in trust, built for how you live now.</h1>
+        <p>Bank Nizwa is Oman's first dedicated Islamic bank — Shari'a-compliant accounts, financing and cards, with real advisors a call away when you need them.</p>
+        <div class="hero-ctas">
+          <a href="#offers" class="btn btn-primary">Open an account</a>
+          <a href="#contact" class="btn btn-ghost-light">Talk to an advisor</a>
         </div>
       </div>
 
-      <!-- Hero Text -->
-      <div class="hero-text">
-        <p class="ar-sub">شارك في تحسين الخدمات الحكومية من خلال</p>
-        <h1 class="ar-main">تطبيق المتسوق السري</h1>
-        <p class="en-sub">Be part of improving government services through</p>
-        <h2 class="en-main">The Mystery Shopper App</h2>
+      <div class="hero-panel">
+        <h2>Manage your banking</h2>
+        <ul class="hero-panel-list">
+          <li><a href="#">Log in to Internet Banking <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></a></li>
+          <li><a href="#offers">Open a new account <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></a></li>
+          <li><a href="#">Check today's profit rates <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></a></li>
+          <li><a href="#contact">Find your nearest branch <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Trust strip -->
+  <section class="trust" style="padding:0;" aria-label="About Bank Nizwa">
+    <div class="wrap">
+      <ul class="trust-row">
+        <li><strong>Est. 2013</strong>Oman's first dedicated Islamic bank</li>
+        <li><strong>Licensed</strong>Regulated by the Central Bank of Oman</li>
+        <li><strong>Shari'a-governed</strong>Independent Shari'a Supervisory Board</li>
+        <li><strong>Full service</strong>Retail, corporate &amp; treasury banking</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Offers -->
+  <section id="offers" aria-labelledby="offers-heading">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="offers-heading">What you can bank on</h2>
+        <p>Four ways to put Shari'a-compliant banking to work, whatever you're planning next.</p>
       </div>
 
-      <!-- Bottom: QR + Stores + Badges -->
-      <div class="bottom-row">
+      <div class="offers-grid">
+        <article class="offer-card">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 13l1.6-5A2 2 0 0 1 6.5 6.5h11a2 2 0 0 1 1.9 1.5L21 13"/><rect x="3" y="13" width="18" height="6" rx="1.5"/><circle cx="7.5" cy="19" r="1.3"/><circle cx="16.5" cy="19" r="1.3"/></svg>
+          <h3>Auto Finance</h3>
+          <p>Move into a new car with financing structured around your budget, free from interest.</p>
+          <a href="#" class="learn">See auto finance</a>
+        </article>
 
-        <!-- QR + stores -->
-        <div class="qr-section">
-          <div class="qr-inner">
-            <!-- QR Code SVG -->
-            <div class="qr-box">
-              <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <!-- QR code pattern approximation -->
-                <rect width="100" height="100" fill="white"/>
-                <!-- Top-left finder -->
-                <rect x="5" y="5" width="28" height="28" rx="2" fill="#111"/>
-                <rect x="9" y="9" width="20" height="20" rx="1" fill="white"/>
-                <rect x="13" y="13" width="12" height="12" rx="1" fill="#111"/>
-                <!-- Top-right finder -->
-                <rect x="67" y="5" width="28" height="28" rx="2" fill="#111"/>
-                <rect x="71" y="9" width="20" height="20" rx="1" fill="white"/>
-                <rect x="75" y="13" width="12" height="12" rx="1" fill="#111"/>
-                <!-- Bottom-left finder -->
-                <rect x="5" y="67" width="28" height="28" rx="2" fill="#111"/>
-                <rect x="9" y="71" width="20" height="20" rx="1" fill="white"/>
-                <rect x="13" y="75" width="12" height="12" rx="1" fill="#111"/>
-                <!-- Data dots (random pattern) -->
-                <rect x="38" y="5" width="5" height="5" fill="#111"/>
-                <rect x="46" y="5" width="5" height="5" fill="#111"/>
-                <rect x="54" y="5" width="5" height="5" fill="#111"/>
-                <rect x="38" y="13" width="5" height="5" fill="#111"/>
-                <rect x="54" y="13" width="5" height="5" fill="#111"/>
-                <rect x="38" y="21" width="5" height="5" fill="#111"/>
-                <rect x="46" y="21" width="5" height="5" fill="#111"/>
-                <rect x="5" y="38" width="5" height="5" fill="#111"/>
-                <rect x="13" y="38" width="5" height="5" fill="#111"/>
-                <rect x="21" y="38" width="5" height="5" fill="#111"/>
-                <rect x="38" y="38" width="5" height="5" fill="#111"/>
-                <rect x="54" y="38" width="5" height="5" fill="#111"/>
-                <rect x="62" y="38" width="5" height="5" fill="#111"/>
-                <rect x="70" y="38" width="5" height="5" fill="#111"/>
-                <rect x="86" y="38" width="5" height="5" fill="#111"/>
-                <rect x="5" y="46" width="5" height="5" fill="#111"/>
-                <rect x="21" y="46" width="5" height="5" fill="#111"/>
-                <rect x="38" y="46" width="5" height="5" fill="#111"/>
-                <rect x="54" y="46" width="5" height="5" fill="#111"/>
-                <rect x="78" y="46" width="5" height="5" fill="#111"/>
-                <rect x="86" y="46" width="5" height="5" fill="#111"/>
-                <rect x="13" y="54" width="5" height="5" fill="#111"/>
-                <rect x="29" y="54" width="5" height="5" fill="#111"/>
-                <rect x="46" y="54" width="5" height="5" fill="#111"/>
-                <rect x="62" y="54" width="5" height="5" fill="#111"/>
-                <rect x="70" y="54" width="5" height="5" fill="#111"/>
-                <rect x="86" y="54" width="5" height="5" fill="#111"/>
-                <rect x="38" y="62" width="5" height="5" fill="#111"/>
-                <rect x="54" y="62" width="5" height="5" fill="#111"/>
-                <rect x="70" y="62" width="5" height="5" fill="#111"/>
-                <rect x="78" y="62" width="5" height="5" fill="#111"/>
-                <rect x="46" y="70" width="5" height="5" fill="#111"/>
-                <rect x="62" y="70" width="5" height="5" fill="#111"/>
-                <rect x="86" y="70" width="5" height="5" fill="#111"/>
-                <rect x="38" y="78" width="5" height="5" fill="#111"/>
-                <rect x="54" y="78" width="5" height="5" fill="#111"/>
-                <rect x="70" y="78" width="5" height="5" fill="#111"/>
-                <rect x="46" y="86" width="5" height="5" fill="#111"/>
-                <rect x="62" y="86" width="5" height="5" fill="#111"/>
-                <rect x="78" y="86" width="5" height="5" fill="#111"/>
-                <rect x="86" y="86" width="5" height="5" fill="#111"/>
-              </svg>
-            </div>
-            <div class="qr-label">
-              <span class="ar">امسح الرمز<br>لتحميل التطبيق</span>
-              <span class="en">SCAN QR CODE<br>TO DOWNLOAD</span>
-            </div>
-          </div>
+        <article class="offer-card">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 11.5L12 4l8 7.5"/><path d="M6 10.5V20h12v-9.5"/></svg>
+          <h3>Home Finance</h3>
+          <p>Finance your home through transparent, profit-rate agreements — never hidden interest.</p>
+          <a href="#" class="learn">See home finance</a>
+        </article>
 
-          <!-- App Store Buttons -->
-          <div class="store-buttons">
-            <a href="https://apps.apple.com/ae/app/uae-mystery-shopper/id1472141321" class="store-btn" target="_blank">
-              <svg viewBox="0 0 24 24" fill="white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-              <div class="store-btn-text">
-                <span class="small">Download on the</span>
-                <span class="big">App Store</span>
-              </div>
-            </a>
-            <a href="https://play.google.com/store/apps/details?id=com.mysteryshopperapplication.uae" class="store-btn" target="_blank">
-              <svg viewBox="0 0 24 24" fill="white"><path d="M3 20.5v-17c0-.83.94-1.3 1.6-.8l14 8.5c.6.37.6 1.23 0 1.6l-14 8.5c-.66.5-1.6.03-1.6-.8z" fill="#78C257"/><path d="M3 3.5l9 9L3 20.5V3.5z" fill="#4285F4"/><path d="M3 3.5l9 9 5.5-5.5L3 3.5z" fill="#EA4335"/><path d="M3 20.5l9-9 5.5 5.5L3 20.5z" fill="#FBBC05"/></svg>
-              <div class="store-btn-text">
-                <span class="small">Get it on</span>
-                <span class="big">Google Play</span>
-              </div>
-            </a>
+        <article class="offer-card">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v3M12 18v3M4.2 7.5l2.6 1.5M17.2 15l2.6 1.5M4.2 16.5l2.6-1.5M17.2 9l2.6-1.5"/><circle cx="12" cy="12" r="4.2"/></svg>
+          <h3>Personal Finance</h3>
+          <p>Cover life's bigger moments with flexible, Shari'a-compliant personal financing.</p>
+          <a href="#" class="learn">See personal finance</a>
+        </article>
+
+        <article class="offer-card">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="12" rx="1.6"/><path d="M3 10h18"/></svg>
+          <h3>Cards</h3>
+          <p>Debit and credit cards for everyday spending, from everyday value to premium travel.</p>
+          <a href="#cards" class="learn">See cards</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Priority banking -->
+  <section id="priority" class="priority" aria-labelledby="priority-heading">
+    <div class="wrap priority-grid">
+      <div>
+        <h2 id="priority-heading">For customers who want more from their bank</h2>
+        <p>Priority Banking pairs you with a dedicated relationship manager, faster service, and a set of members-only benefits — built for customers whose banking needs go beyond the everyday.</p>
+        <a href="#" class="btn btn-ghost-light">Explore Priority Banking</a>
+      </div>
+      <ul class="benefit-list">
+        <li>Exclusive lifestyle benefits</li>
+        <li>Ethical, values-aligned wealth building</li>
+        <li>Competitive profit rates on savings</li>
+        <li>A dedicated relationship manager</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Cards lineup -->
+  <section id="cards" aria-labelledby="cards-heading">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="cards-heading">A card for how you spend</h2>
+        <p>From day-to-day debit to premium travel credit, every Bank Nizwa card is issued on Shari'a-compliant terms.</p>
+      </div>
+      <div class="card-strip">
+        <div class="card-tile t1"><span>Debit Card</span>Value Banking</div>
+        <div class="card-tile t2"><span>Debit Card</span>Ladies Banking</div>
+        <div class="card-tile t3"><span>Debit Card</span>Privilege Banking</div>
+        <div class="card-tile t4"><span>Debit Card</span>Special Banking</div>
+        <div class="card-tile t5"><span>Credit Card</span>Gold Credit</div>
+        <div class="card-tile t6"><span>Credit Card</span>Platinum Credit</div>
+        <div class="card-tile t7"><span>Credit Card</span>World Credit</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- News -->
+  <section id="news" aria-labelledby="news-heading">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="news-heading">From the bank</h2>
+        <p>A few things worth reading before your next visit.</p>
+      </div>
+      <ul class="news-list">
+        <li>
+          <span class="news-cat">Explained</span>
+          <div class="news-body">
+            <h3>Understanding Murabaha and Ijarah financing</h3>
+            <p>The two structures behind most Bank Nizwa financing, in plain language.</p>
           </div>
+          <a href="#" class="read">Read more</a>
+        </li>
+        <li>
+          <span class="news-cat">Guide</span>
+          <div class="news-body">
+            <h3>Five habits for a Shari'a-compliant savings plan</h3>
+            <p>Practical steps for building savings without relying on interest.</p>
+          </div>
+          <a href="#" class="read">Read more</a>
+        </li>
+        <li>
+          <span class="news-cat">Governance</span>
+          <div class="news-body">
+            <h3>How our Shari'a Supervisory Board reviews every product</h3>
+            <p>A look at the approval process behind each account, card and financing plan.</p>
+          </div>
+          <a href="#" class="read">Read more</a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CTA band -->
+  <section aria-labelledby="cta-heading" id="contact">
+    <div class="wrap">
+      <div class="cta-band">
+        <div>
+          <h2 id="cta-heading">Prefer to talk it through?</h2>
+          <p>Open the chat in the corner of this page to speak with an advisor, or visit a branch near you.</p>
         </div>
+        <a href="#" class="btn btn-primary">Find a branch</a>
+      </div>
+    </div>
+  </section>
 
-        <!-- Seal + WhatsApp -->
-        <div class="badges-section">
-          <div class="seal-badge">
-            <div class="seal-text">
-              <span class="ar-seal">كن متسوقنا السري</span>
-              BE OUR<br>MYSTERY<br>SHOPPER
-            </div>
-          </div>
-          <a href="https://wa.me/97147771000" class="whatsapp-btn" target="_blank">
-            <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-            </svg>
-          </a>
-        </div>
+</main>
 
+<footer>
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <span class="name">Bank Nizwa</span>
+      <p>Oman's first dedicated Islamic bank, offering Shari'a-compliant retail, corporate and treasury banking.</p>
+      <div class="social-row">
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor" style="color:#fff"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.3-1.5 1.6-1.5h1.6V3.6C15.9 3.5 15 3.4 14 3.4c-2.4 0-4 1.5-4 4.1v2.4H7.3V13H10v8h3.5z"/></svg></a>
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="4"/><circle cx="12" cy="12" r="3.2"/><circle cx="16.6" cy="7.4" r="0.6" fill="#fff"/></svg></a>
+        <a href="#" aria-label="X"><svg viewBox="0 0 24 24" fill="#fff"><path d="M4 4l7 8.6L4.4 20H7l5-5.8 4 5.8h3.6l-7.3-9L20 4h-2.6l-4.6 5.3L9 4H4z"/></svg></a>
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="#fff"><path d="M6.9 8.6H4V20h2.9V8.6zM5.4 4.1a1.7 1.7 0 1 0 0 3.4 1.7 1.7 0 0 0 0-3.4zM20 20v-6.3c0-3.4-1.8-5-4.2-5-1.9 0-2.8 1.1-3.2 1.8V8.6H9.6c0 .1 0 8.5 0 11.4h2.9v-6.4c0-.3 0-.7.1-.9.3-.7.9-1.4 2-1.4 1.4 0 2 1.1 2 2.7V20H20z"/></svg></a>
       </div>
     </div>
 
-    <!-- ── RIGHT COLUMN: Phone Mockups ── -->
-    <div class="right-col">
-      <div class="phones-container">
+    <nav aria-label="Personal">
+      <h4>Personal</h4>
+      <ul>
+        <li><a href="#">Accounts</a></li>
+        <li><a href="#cards">Cards</a></li>
+        <li><a href="#offers">Auto Finance</a></li>
+        <li><a href="#offers">Home Finance</a></li>
+        <li><a href="#offers">Personal Finance</a></li>
+      </ul>
+    </nav>
 
-        <!-- Back phone -->
-        <div class="phone phone-back">
-          <div class="phone-notch"></div>
-          <div class="phone-screen">
-            <div class="phone-screen-inner">
-              <div class="app-header">
-                <div class="app-logo-dot"></div>
-                <div class="app-header-text">المتسوق السري</div>
-              </div>
-              <div class="app-body">
-                <div class="app-search">ابحث عن جهة...</div>
-                <div class="app-grid">
-                  <div class="app-card">
-                    <div class="app-card-icon">🏛️</div>
-                    <div class="app-card-text">مراكز الخدمة</div>
-                  </div>
-                  <div class="app-card">
-                    <div class="app-card-icon">📞</div>
-                    <div class="app-card-text">مركز الاتصال</div>
-                  </div>
-                  <div class="app-card">
-                    <div class="app-card-icon">💻</div>
-                    <div class="app-card-text">الموقع الإلكتروني</div>
-                  </div>
-                  <div class="app-card">
-                    <div class="app-card-icon">📱</div>
-                    <div class="app-card-text">التطبيق الذكي</div>
-                  </div>
-                </div>
-                <div class="app-entity-row">
-                  <div class="entity-logo" style="background:#4a8a7c;"></div>
-                  <div class="entity-name">MOHRE - وزارة الموارد البشرية</div>
-                </div>
-                <div class="app-entity-row">
-                  <div class="entity-logo" style="background:#5a6a9a;"></div>
-                  <div class="entity-name">ICP - هيئة الهوية والجنسية</div>
-                </div>
-                <button class="app-btn">تقديم تقييم</button>
-              </div>
-            </div>
-          </div>
-        </div>
+    <nav aria-label="Business">
+      <h4>Business</h4>
+      <ul>
+        <li><a href="#">Corporate Banking</a></li>
+        <li><a href="#">SME</a></li>
+        <li><a href="#">Trade Finance</a></li>
+        <li><a href="#">Transaction Banking</a></li>
+      </ul>
+    </nav>
 
-        <!-- Front phone -->
-        <div class="phone phone-front">
-          <div class="phone-notch"></div>
-          <div class="phone-screen">
-            <div class="phone-screen-inner">
-              <div class="app-header">
-                <div class="app-logo-dot"></div>
-                <div class="app-header-text">أي من خدمات الجهة تريد تقييمها؟</div>
-              </div>
-              <div class="app-body">
-                <div class="app-grid">
-                  <div class="app-card" style="background:linear-gradient(135deg,#c9a84c22,#c9a84c11);">
-                    <div class="app-card-icon">📋</div>
-                    <div class="app-card-text">جميع مراكز الخدمة</div>
-                  </div>
-                  <div class="app-card">
-                    <div class="app-card-icon">🏠</div>
-                    <div class="app-card-text">مركز أبوظبي</div>
-                  </div>
-                  <div class="app-card">
-                    <div class="app-card-icon">🌆</div>
-                    <div class="app-card-text">مركز دبي</div>
-                  </div>
-                  <div class="app-card">
-                    <div class="app-card-icon">📍</div>
-                    <div class="app-card-text">مركز الشارقة</div>
-                  </div>
-                </div>
-                <div class="app-entity-row" style="margin-top:8px;">
-                  <div class="entity-logo" style="background:#7a4a9a;"></div>
-                  <div class="entity-name">EHS - هيئة الصحة - دبي</div>
-                </div>
-                <div class="app-entity-row">
-                  <div class="entity-logo" style="background:#4a7a4a;"></div>
-                  <div class="entity-name">MOCD - وزارة التنمية المجتمعية</div>
-                </div>
-                <button class="app-btn">تأكيد الاختيار</button>
-              </div>
-            </div>
-          </div>
-        </div>
+    <nav aria-label="About">
+      <h4>About</h4>
+      <ul>
+        <li><a href="#">About Bank Nizwa</a></li>
+        <li><a href="#">Shari'a Supervisory Board</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#news">News</a></li>
+      </ul>
+    </nav>
 
-      </div>
-    </div>
-
+    <nav aria-label="Contact">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="#contact">Contact us</a></li>
+        <li><a href="#">Branches &amp; ATMs</a></li>
+        <li><a href="#">Internet Banking</a></li>
+        <li><a href="#">eForms</a></li>
+      </ul>
+    </nav>
   </div>
 
-  <!-- ── WEBCALL WIDGET ── -->
-<!-- <script
-  src="https://agent-starter-embed-glpv0aybe.staging.livekit.io/embed-popup.js"
-  data-lk-sandbox-id="agent-starter-embed-glpv0aybe"
-  data-lk-agent="CA_dTyLuKXkTsS5"
-  data-lk-color="#002cf2"
-></script> -->
+  <div class="wrap footer-bottom">
+    <span>© 2026 Bank Nizwa. All rights reserved. Regulated by the Central Bank of Oman.</span>
+    <div class="app-badges">
+      <span>Get it on Google Play</span>
+      <span>Download on the App Store</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Minimal mobile nav toggle
+  var toggle = document.getElementById('navToggle');
+  var header = document.getElementById('siteHeader');
+  toggle.addEventListener('click', function(){
+    var isOpen = header.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+</script>
+
+<!-- <script>
+    (function () {
+        const s = document.createElement("script");
+        s.src = "https://s3.eu-west-1.amazonaws.com/livekit.webcall.bundles/channel-bundles/7195d5f9-79a2-4b5b-8f6d-ac82aa8d7d3a/6bc1c957-aadc-43dd-9847-9e4e5a6e30d8/6bc1c957-aadc-43dd-9847-9e4e5a6e30d8.bundle.js";
+        s.charset = "UTF-8";
+        s.onload = function () {
+            window.Webcall.init();
+        };
+        document.head.appendChild(s);
+    })();
+</script> -->
+
 <script
   src="https://cloud.livekit.io/embed-popup.js"
-  data-lk-agent="CA_dTyLuKXkTsS5"
-  data-lk-color="#002cf2"
+  data-lk-agent="CA_MB7HhjdVLZSz"
+  data-lk-color="#000000"
+  data-lk-theme="dark"
 ></script>
+
+<script>
+    (function () {
+        const s = document.createElement("script");
+        s.src = "https://s3.eu-west-1.amazonaws.com/webchat.bundles/channel-bundles/7195d5f9-79a2-4b5b-8f6d-ac82aa8d7d3a/af0a66e7-c147-4215-8fee-072c89822e69/af0a66e7-c147-4215-8fee-072c89822e69.bundle.js";
+        s.async = true;
+        s.charset = "UTF-8";
+        s.onload = function () {
+            window.Webchat.init();
+        };
+        document.head.appendChild(s);
+    })();
+</script>
 
 </body>
 </html>
